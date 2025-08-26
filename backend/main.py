@@ -6,7 +6,9 @@ from database import Base, engine, get_db
 import models, schemas
 
 from crud import update_stock
-from schemas import ItemUpdate
+from schemas import ItemUpdate, UserLogin, Token
+from auth import verify_password, create_access_token
+from dependencies import get_current_user
 
 Base.metadata.create_all(bind=engine)
 
@@ -26,7 +28,7 @@ def list_items(db: Session = Depends(get_db)):
     return items
 
 @app.patch("/items/{item_id}", response_model=schemas.ItemOut)
-def patch_item(item_id: int, body: ItemUpdate, db: Session = Depends(get_db)):
+def patch_item(item_id: int, body: ItemUpdate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     item = db.get(models.Item, item_id)
     if not item:
         raise HTTPException(status_code=404, detail="No se encontró el Item")
@@ -36,6 +38,14 @@ def patch_item(item_id: int, body: ItemUpdate, db: Session = Depends(get_db)):
 @app.get("/movements", response_model=list[schemas.MovementOut])
 def list_movements(db: Session = Depends(get_db)):
     return db.query(models.Movement).order_by(models.Movement.timestamp.desc()).all()
+
+@app.post("/login", response_model=Token)
+def login(user: UserLogin, db: Session = Depends(get_db)):
+    db_user = db.query(models.User).filter(models.User.username == user.username).first()
+    if not db_user or not verify_password(user.password, db_user.password):
+        raise HTTPException(status_code=401, detail="Credenciales inválidas")
+    access_token = create_access_token(data={"sub": db_user.username})
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
 def seed_demo():
