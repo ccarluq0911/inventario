@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Depends, HTTPException, Path
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from database import Base, engine, get_db
@@ -11,13 +12,21 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Inventario API")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get("/items", response_model=list[schemas.ItemOut])
 def list_items(db: Session = Depends(get_db)):
     items = db.query(models.Item).order_by(models.Item.id).all()
     return items
 
 @app.patch("/items/{item_id}", response_model=schemas.ItemOut)
-def patch_item(item_id: int = Path(..., ge=1), body: ItemUpdate = None, db: Session = Depends(get_db)):
+def patch_item(item_id: int, body: ItemUpdate, db: Session = Depends(get_db)):
     item = db.get(models.Item, item_id)
     if not item:
         raise HTTPException(status_code=404, detail="No se encontró el Item")
@@ -26,7 +35,7 @@ def patch_item(item_id: int = Path(..., ge=1), body: ItemUpdate = None, db: Sess
 
 @app.get("/movements", response_model=list[schemas.MovementOut])
 def list_movements(db: Session = Depends(get_db)):
-    return db.query(models.Movement).order_by(models.Movement.timestamp).all()
+    return db.query(models.Movement).order_by(models.Movement.timestamp.desc()).all()
 
 
 def seed_demo():
