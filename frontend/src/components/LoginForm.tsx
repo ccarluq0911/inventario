@@ -24,13 +24,20 @@ export default function LoginForm({ onLogin }: Props) {
     <form onSubmit={handleSubmit}>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <div>
-        <label>Usuario:</label>
-        <input value={username} onChange={(e) => setUsername(e.target.value)} />
+        <label htmlFor="username">Usuario:</label>
+        <input
+          id="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
       </div>
       <div>
-        <label>Contraseña:</label>
+        <label htmlFor="password">Contraseña:</label>
         <input
-          type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
       </div>
       <button type="submit">Login</button>
