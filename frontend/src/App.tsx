@@ -3,6 +3,7 @@ import type { Item, Movement } from "./types";
 import { listItems, listMovements, updateItem } from "./api";
 import InventoryList from "./components/InventoryList";
 import MovementLog from "./components/MovementLog";
+import LoginForm from "./components/LoginForm";
 import "./App.css";
 
 function App() {
@@ -10,7 +11,9 @@ function App() {
   const [movs, setMovs] = useState<Movement[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>();
+  const [token, setToken] = useState<string | null>(null);
 
+  
   useEffect(() => {
     (async () => {
       try {
@@ -24,9 +27,15 @@ function App() {
       }
     })();
   }, []);
-
+  
+  if (!token) {
+    return <LoginForm onLogin={setToken} />;
+  }
+  
   async function handleUpdate(id: number, qty: number) {
-    await updateItem(id, qty);
+    if (!token) throw new Error("No hay un Token disponible");
+
+    await updateItem(id, qty, token);
     const [it, mv] = await Promise.all([listItems(), listMovements()]);
     setItems(it);
     setMovs(mv);
