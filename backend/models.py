@@ -24,5 +24,10 @@ class Movement(Base):
     timestamp: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
 
     item: Mapped["Item"] = relationship(back_populates="movements")
-    
 
+class User(Base):
+    __tablename__ = "users"
+    
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    username: Mapped[str] = mapped_column(String(50), unique=True, index=True)
+    hashed_password: Mapped[str] = mapped_column(String(128))
