@@ -21,7 +21,7 @@ class Movement(Base):
     item_id: Mapped[int] = mapped_column(ForeignKey("items.id"))
     change: Mapped[int] = mapped_column(Integer)
     type: Mapped[str] = mapped_column(String(10))
-    timestamp: Mapped[datetime] = mapped_column(DateTime, default=datetime.now())
+    timestamp: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
 
     item: Mapped["Item"] = relationship(back_populates="movements")
     
