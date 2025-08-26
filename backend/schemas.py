@@ -14,10 +14,11 @@ class ItemOut(ItemBase):
         
 class MovementOut(BaseModel):
     id: int
-    item_id: int
     change: int
     type: str
     timestamp: datetime
+    sku: str
+    ean13: str
 
     class Config:
         from_attributes = True

@@ -37,12 +37,23 @@ def patch_item(item_id: int, body: ItemUpdate, db: Session = Depends(get_db), cu
 
 @app.get("/movements", response_model=list[schemas.MovementOut])
 def list_movements(db: Session = Depends(get_db)):
-    return db.query(models.Movement).order_by(models.Movement.timestamp.desc()).all()
+    movements = db.query(models.Movement).join(models.Item).order_by(models.Movement.timestamp.desc()).all()
+    return [
+        schemas.MovementOut(
+            id=m.id,
+            type=m.type,
+            change=m.change,
+            timestamp=m.timestamp,
+            sku=m.item.sku,
+            ean13=m.item.ean13,
+        )
+        for m in movements
+    ]
 
 @app.post("/login", response_model=Token)
 def login(user: UserLogin, db: Session = Depends(get_db)):
     db_user = db.query(models.User).filter(models.User.username == user.username).first()
-    if not db_user or not verify_password(user.password, db_user.password):
+    if not db_user or not verify_password(user.password, db_user.hashed_password):
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
     access_token = create_access_token(data={"sub": db_user.username})
     return {"access_token": access_token, "token_type": "bearer"}

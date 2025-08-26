@@ -11,4 +11,6 @@ export type Movement = {
   change: number;
   type: string;
   timestamp: string;
+  sku: string;
+  ean13: string;
 };

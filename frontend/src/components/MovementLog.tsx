@@ -5,7 +5,8 @@ export default function MovementLog({ movements }: { movements: Movement[] }) {
     <table>
       <thead>
         <tr>
-          <th>Item ID</th>
+          <th>SKU</th>
+          <th>EAN13</th>
           <th>Cambio</th>
           <th>Tipo</th>
           <th>Fecha</th>
@@ -14,7 +15,8 @@ export default function MovementLog({ movements }: { movements: Movement[] }) {
       <tbody>
         {movements.map((m) => (
           <tr key={m.id}>
-            <td>{m.item_id}</td>
+            <td>{m.sku}</td>
+            <td>{m.ean13}</td>
             <td>{m.change}</td>
             <td>{m.type}</td>
             <td>{new Date(m.timestamp).toLocaleString()}</td>
