@@ -4,7 +4,10 @@ import models
 def update_stock(db: Session, item: models.Item, new_quantity: int):
     difference = new_quantity - item.quantity 
     item.quantity = new_quantity
-    mv = models.Movement(item_id=item.id, change=difference, type="set")
+
+    mv_type = "Aumento" if difference > 0 else "Disminución" if difference < 0 else "Estable"
+
+    mv = models.Movement(item_id=item.id, change=difference, type=mv_type)
     db.add(mv)
     db.commit()
     db.refresh(item)

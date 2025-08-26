@@ -22,5 +22,5 @@ class MovementOut(BaseModel):
     class Config:
         from_attributes = True
 
-class ItemUpdate(ItemBase):
+class ItemUpdate(BaseModel):
     quantity: int
