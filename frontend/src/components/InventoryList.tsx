@@ -23,7 +23,7 @@ export default function InventoryList({
       <tbody>
         {items.map((it) => {
           const editedQty = editing[it.id] ?? it.quantity;
-          const isSame = editedQty === it.quantity;
+          const disabled = editedQty === it.quantity || editedQty < 0;
 
           return (
             <tr key={it.id}>
@@ -43,7 +43,7 @@ export default function InventoryList({
                 />
                 <button
                   onClick={() => onUpdate(it.id, editedQty)}
-                  disabled={isSame}
+                  disabled={disabled}
                 >
                   Actualizar
                 </button>

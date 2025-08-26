@@ -7,7 +7,7 @@ import models, schemas
 
 from crud import update_stock
 from schemas import ItemUpdate, UserLogin, Token
-from auth import verify_password, create_access_token
+from auth import verify_password, create_access_token, get_password_hash
 from dependencies import get_current_user
 
 Base.metadata.create_all(bind=engine)
@@ -56,6 +56,9 @@ def seed_demo():
                 models.Item(sku="SKU-002", ean13="1111111111111", quantity=5),
             ]
             db.add_all(items)
+            db.commit()
+        if db.query(models.User).count() == 0:
+            db.add(models.User(username="admin", hashed_password=get_password_hash("admin123")))
             db.commit()
 
 seed_demo()
