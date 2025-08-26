@@ -32,8 +32,7 @@ Aplicación web para gestionar el stock de un almacén, con historial de movimie
 - PostgreSQL
 
 ### Base de Datos (PostgreSQL)
-Levanta la base de datos PostgreSQL en Docker usando docker-compose
-Esto creará un contenedor con la DB según la configuración de docker-compose.yml
+Levanta la base de datos PostgreSQL en Docker usando docker-compose. Esto creará un contenedor con la DB según la configuración de docker-compose.yml
 ```
 docker-compose up -d
 ```
