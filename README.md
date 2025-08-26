@@ -6,7 +6,7 @@ Aplicación web para gestionar el stock de un almacén, con historial de movimie
 
 - **Front-end:** React + TypeScript  
 - **Back-end:** FastAPI + Python  
-- **Base de datos:** PostgreSQL  
+- **Base de datos:** PostgreSQL + Docker 
 - **Autenticación:** JWT (JSON Web Tokens)  
 - **Pruebas:** Jest + React Testing Library (front-end), pytest (back-end)  
 
@@ -30,6 +30,16 @@ Aplicación web para gestionar el stock de un almacén, con historial de movimie
 - Node.js >= 18  
 - Python >= 3.10  
 - PostgreSQL
+
+### Base de Datos (PostgreSQL)
+Levanta la base de datos PostgreSQL en Docker usando docker-compose
+Esto creará un contenedor con la DB según la configuración de docker-compose.yml
+```
+docker-compose up -d
+```
+
+Una vez levantado, PostgreSQL estará disponible en localhost:5432 usando las credenciales definidas en docker-compose.yml
+
 
 ### Backend
 
