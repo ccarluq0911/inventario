@@ -2,13 +2,14 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
-from database import Base, engine, get_db
-import models, schemas
+from backend.database import Base, engine, get_db
+from backend.crud import update_stock
+from backend.schemas import ItemUpdate, UserLogin, Token
+from backend.auth import verify_password, create_access_token, get_password_hash
+from backend.dependencies import get_current_user
 
-from crud import update_stock
-from schemas import ItemUpdate, UserLogin, Token
-from auth import verify_password, create_access_token, get_password_hash
-from dependencies import get_current_user
+import backend.models as models
+import backend.schemas as schemas
 
 Base.metadata.create_all(bind=engine)
 

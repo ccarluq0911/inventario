@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from database import Base
+from backend.database import Base
 from datetime import datetime
 
 class Item(Base):

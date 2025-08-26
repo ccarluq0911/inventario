@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-import models
+import backend.models as models
 
 def update_stock(db: Session, item: models.Item, new_quantity: int):
     difference = new_quantity - item.quantity 
