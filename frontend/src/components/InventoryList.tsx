@@ -21,27 +21,36 @@ export default function InventoryList({
         </tr>
       </thead>
       <tbody>
-        {items.map((it) => (
-          <tr key={it.id}>
-            <td>{it.sku}</td>
-            <td>{it.ean13}</td>
-            <td>{it.quantity}</td>
-            <td>
-              <input
-                type="number"
-                defaultValue={it.quantity}
-                onChange={(e) =>
-                  setEditing({ ...editing, [it.id]: parseInt(e.target.value) })
-                }
-              />
-              <button
-                onClick={() => onUpdate(it.id, editing[it.id] ?? it.quantity)}
-              >
-                Actualizar
-              </button>
-            </td>
-          </tr>
-        ))}
+        {items.map((it) => {
+          const editedQty = editing[it.id] ?? it.quantity;
+          const isSame = editedQty === it.quantity;
+
+          return (
+            <tr key={it.id}>
+              <td>{it.sku}</td>
+              <td>{it.ean13}</td>
+              <td>{it.quantity}</td>
+              <td>
+                <input
+                  type="number"
+                  defaultValue={it.quantity}
+                  onChange={(e) =>
+                    setEditing({
+                      ...editing,
+                      [it.id]: parseInt(e.target.value),
+                    })
+                  }
+                />
+                <button
+                  onClick={() => onUpdate(it.id, editedQty)}
+                  disabled={isSame}
+                >
+                  Actualizar
+                </button>
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );
